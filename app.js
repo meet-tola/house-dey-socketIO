@@ -2,7 +2,7 @@ import { Server } from "socket.io";
 
 const io = new Server({
   cors: {
-    origin: "http://localhost:3000" || "https://house-dey.vercel.app",
+    origin: "https://house-dey.vercel.app" || "http://localhost:3000",
   },
 });
 
