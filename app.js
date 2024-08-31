@@ -1,8 +1,12 @@
 import { Server } from "socket.io";
 
+const allowedOrigins = process.env.NODE_ENV === "production"
+  ? ["https://house-dey.vercel.app"]
+  : ["http://localhost:3000"];
+
 const io = new Server({
   cors: {
-    origin: ["http://localhost:3000", "https://house-dey.vercel.app"],
+    origin: allowedOrigins,
   },
 });
 
