@@ -84,7 +84,9 @@ io.on("connection", (socket) => {
   });
 });
 
-app.listen(4000, () => {
+const PORTONE = process.env.PORTONE || 4000;
+
+app.listen(PORTONE, () => {
   console.log("Socket.io server listening on port 4000");
 });
 
