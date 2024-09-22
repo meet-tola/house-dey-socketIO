@@ -88,4 +88,5 @@ app.listen(4000, () => {
   console.log("Socket.io server listening on port 4000");
 });
 
-io.listen(4001);
+const PORT = process.env.PORT || 4001;
+io.listen(PORT);
