@@ -45,13 +45,17 @@ app.post("/emitNotification", (req, res) => {
   const receiver = getUser(userId);
   if (receiver) {
     io.to(receiver.socketId).emit("newNotification", notification);
-    return res.status(200).json({ message: "Notification sent to online user" });
+    return res
+      .status(200)
+      .json({ message: "Notification sent to online user" });
   } else {
     if (!offlineNotifications[userId]) {
       offlineNotifications[userId] = [];
     }
     offlineNotifications[userId].push(notification);
-    return res.status(200).json({ message: "User offline, notification stored" });
+    return res
+      .status(200)
+      .json({ message: "User offline, notification stored" });
   }
 });
 
@@ -60,7 +64,10 @@ io.on("connection", (socket) => {
     addUser(userId, socket.id);
     io.emit("getUsers", onlineUser);
 
-    if (offlineNotifications[userId] && offlineNotifications[userId].length > 0) {
+    if (
+      offlineNotifications[userId] &&
+      offlineNotifications[userId].length > 0
+    ) {
       offlineNotifications[userId].forEach((notification) => {
         io.to(socket.id).emit("newNotification", notification);
       });
@@ -69,11 +76,14 @@ io.on("connection", (socket) => {
   });
 
   socket.on("sendMessage", ({ receiverId, message }) => {
-    const receiver = getUser(receiverId);
+    const receiver = getUser(receiverId);    
     if (receiver) {
-      io.to(receiver.socketId).emit("getMessage", message);
+      io.to(receiver.socketId).emit("getMessage", { ...message });
+    } else {
+      console.log("Receiver not found or offline");
     }
   });
+  
 
   socket.on("disconnect", () => {
     removeUser(socket.id);
